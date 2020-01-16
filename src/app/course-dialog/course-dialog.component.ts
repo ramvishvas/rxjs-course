@@ -51,17 +51,10 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // New code added
-    // this.form.valueChanges
-    //   .pipe(filter(() => this.form.valid))
-    //   .subscribe(changes => {
-    //     const saveData$ = this.saveChange(changes);
-    //     saveData$.subscribe(console.log);
-    //   });
-
     this.form.valueChanges
       .pipe(
         filter(() => this.form.valid),
-        concatMap(changes => this.saveChange(changes))
+        mergeMap(changes => this.saveChange(changes))
       )
       .subscribe(console.log);
   }

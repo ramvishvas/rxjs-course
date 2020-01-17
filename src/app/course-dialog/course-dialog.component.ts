@@ -72,7 +72,15 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
     );
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+    // fromEvent(this.saveButton.nativeElement, "click")
+    //   .pipe(concatMap(() => this.saveChange(this.form.value)))
+    //   .subscribe(console.log);
+
+    fromEvent(this.saveButton.nativeElement, "click")
+      .pipe(exhaustMap(() => this.saveChange(this.form.value)))
+      .subscribe(console.log);
+  }
 
   close() {
     this.dialogRef.close();

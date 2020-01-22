@@ -7,7 +7,11 @@ export function createHttpObserable(url: string) {
 
     fetch(url, { signal })
       .then(res => {
-        return res.json();
+        if (res.ok) {
+          return res.json();
+        } else {
+          observer.error("Request failed with status code: " + res.status);
+        }
       })
       .then(body => {
         observer.next(body);

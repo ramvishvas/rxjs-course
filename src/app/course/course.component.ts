@@ -42,25 +42,16 @@ export class CourseComponent implements OnInit, AfterViewInit {
     this.courseId = this.route.snapshot.params["id"];
 
     this.course$ = createHttpObserable(`/api/courses/${this.courseId}`);
-
-    // this.lessons$ = this.loadLessons();
   }
 
   ngAfterViewInit() {
-    const searchLesson$ = fromEvent<any>(
-      this.input.nativeElement,
-      "keyup"
-    ).pipe(
+    this.lessons$ = fromEvent<any>(this.input.nativeElement, "keyup").pipe(
       map(event => event.target.value),
-      debounceTime(400), // get value in interval of 400ms
-      distinctUntilChanged(), // remove duplicate value
-      // concatMap(search => this.loadLessons(search)) // this will not meet upto mark
+      startWith(""),
+      debounceTime(400),
+      distinctUntilChanged(),
       switchMap(search => this.loadLessons(search))
     );
-
-    const initialLesson$ = this.loadLessons();
-
-    this.lessons$ = concat(initialLesson$, searchLesson$);
   }
 
   loadLessons(search = ""): Observable<Lesson[]> {
